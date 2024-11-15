@@ -182,7 +182,11 @@
               </div>
             </div>
             <div class="">
-              <a class="" data-modal-target="site-banner-modal" href="#"
+              <a
+                id="openVideo"
+                class=""
+                data-modal-target="site-banner-modal"
+                href="#"
                 ><svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="201"
@@ -553,6 +557,7 @@
             alt="story cover image"
             class="w-full"
           />
+          <div class="absolute inset-0"></div>
           <div
             class="bg-black/50 absolute inset-0 flex flex-col items-center text-white"
           >
@@ -1057,6 +1062,36 @@
         ></a>
       </div>
     </nav>
+    <div
+      id="videoModel"
+      class="fixed inset-0 items-center justify-center p-4 z-40 hidden"
+      style="
+        background: #000 url('./images/terrain-pattern.svg') center/510px repeat;
+      "
+    >
+      <a
+        href="index.html"
+        id="closeVideo"
+        class="absolute top-8 right-8 group min-h-8 min-w-10 transition-all duration-500 cursor-pointer z-20"
+      >
+        <div
+          class="absolute rotate-45 group-hover:rotate-0 top-[12px] transition-all duration-500 ease-in-out right-0 h-[2px] w-10 bg-white"
+        ></div>
+        <div
+          class="absolute -rotate-45 group-hover:rotate-0 top-[12px] transition-all duration-500 ease-in-out right-0 h-[2px] w-10 bg-white"
+        ></div>
+      </a>
+      <iframe
+        width="560"
+        height="315"
+        src="https://www.youtube.com/embed/WFLMPlUHbNA?si=9SvvtAUCz_gzgbXc"
+        title="YouTube video player"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerpolicy="strict-origin-when-cross-origin"
+        allowfullscreen
+      ></iframe>
+    </div>
     <script>
       // Cache DOM elements
       const slider = document.querySelectorAll(".slide");
@@ -1069,6 +1104,11 @@
       const storySection = document.getElementById("story-section");
       const whySection = document.getElementById("why-section");
       const logo = document.getElementById("logo");
+      const closeMenu = document.getElementById("closeMenu");
+      const navElement = document.getElementById("menuModel");
+      const closeVideo = document.getElementById("closeVideo");
+      const openVideo = document.getElementById("openVideo");
+      const videoModel = document.getElementById("videoModel");
 
       let translateXAmount = 0;
       const movePercentage = 106;
@@ -1172,20 +1212,26 @@
 
       // Menu model
 
-      // Get the navigation and buttons by their IDs
-      const closeMenu = document.getElementById("closeMenu");
-      const navElement = document.getElementById("menuModel"); // Adjust the selector to match your specific nav element if needed
-
-      // Function to handle opening the menu
       secondNav.addEventListener("click", () => {
         navElement.classList.remove("top-full", "max-h-0");
         navElement.classList.add("top-0", "max-h-[2000px]");
       });
 
-      // Function to handle closing the menu
       closeMenu.addEventListener("click", () => {
         navElement.classList.remove("top-0", "max-h-[2000px]");
         navElement.classList.add("top-full", "max-h-0");
+      });
+
+      // Video model
+
+      openVideo.addEventListener("click", () => {
+        videoModel.classList.remove("hidden");
+        videoModel.classList.add("flex");
+      });
+
+      closeVideo.addEventListener("click", () => {
+        videoModel.classList.add("hidden");
+        videoModel.classList.remove("flex");
       });
     </script>
   </body>
