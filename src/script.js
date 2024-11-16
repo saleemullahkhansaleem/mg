@@ -129,3 +129,22 @@ videoDoorButton.addEventListener("click", () => {
     );
   }
 });
+
+// Video stamp
+const dynamicString = "Alaka text me darla dynamic kralo . "; // dynamic string
+const containers = [
+  { element: document.getElementById("dynamicText"), target: videoDoorButton },
+  { element: document.getElementById("dynamicText2"), target: openVideo },
+];
+
+containers.forEach(({ element, target }) => {
+  const totalCharacters = dynamicString.length;
+  target.style.setProperty("--total", totalCharacters);
+
+  dynamicString.split("").forEach((char, index) => {
+    const span = document.createElement("span");
+    span.textContent = char;
+    span.style.setProperty("--index", index);
+    element.appendChild(span);
+  });
+});
