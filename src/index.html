@@ -52,7 +52,7 @@
   </head>
   <body class="relative">
     <header
-      class="fixed top-0 inset-x-0 pt-6 pl-6 pr-4 flex justify-between items-start z-30 text-white overflow-x-hidden"
+      class="fixed top-0 inset-x-0 pt-6 pl-6 pr-4 flex justify-between items-start z-30 text-white overflow-hidden"
     >
       <a class="p-2 hidden-left max-w-24 md:max-w-36" href="/">
         <svg
@@ -328,7 +328,7 @@
           "
         >
           <div
-            class="grid grid-cols-1 md:grid-cols-2 items-center gap-8 max-w-5xl mx-auto overflow-x-hidden"
+            class="grid grid-cols-1 md:grid-cols-2 items-center gap-8 max-w-5xl mx-auto overflow-hidden"
           >
             <div class="text-white space-y-12 md:order-2 hidden-right">
               <div class="scale-y-150 mt-8">
@@ -551,20 +551,50 @@
         </div>
       </section>
       <section>
-        <div class="w-full md:w-11/12 mx-auto relative">
-          <img
-            src="./images/our-story-video-cover.jpg"
-            alt="story cover image"
-            class="w-full"
-          />
-          <div class="absolute inset-0"></div>
+        <div class="w-full md:w-11/12 mx-auto relative overflow-hidden">
+          <iframe
+            class="w-full aspect-video object-cover"
+            src="https://www.youtube.com/embed/WFLMPlUHbNA?si=9SvvtAUCz_gzgbXc"
+            title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen
+          ></iframe>
           <div
-            class="bg-black/50 absolute inset-0 flex flex-col items-center text-white"
+            class="absolute inset-y-0 left-0 w-1/2 overflow-hidden transition-transform duration-[1.5s] ease-linear"
+            id="videoDoorLeft"
+          >
+            <div class="absolute inset-0 bg-black/50"></div>
+            <img
+              src="./images/our-story-video-cover.jpg"
+              alt="story cover image"
+              class="min-w-[200%] h-full float-left"
+            />
+          </div>
+          <div
+            class="absolute inset-y-0 right-0 w-1/2 overflow-hidden transition-transform duration-[1.5s] ease-linear"
+            id="videoDoorRight"
+          >
+            <div class="absolute inset-0 bg-black/50"></div>
+            <img
+              src="./images/our-story-video-cover.jpg"
+              alt="story cover image"
+              class="min-w-[200%] h-full float-right"
+            />
+          </div>
+          <div
+            class="absolute inset-0 flex flex-col items-center text-white transition-transform duration-[3s] ease-linear"
+            id="videoStamp"
           >
             <div class="w-[2px] h-full bg-white"></div>
             <div class="max-h-[40%]">
-              <a class="" data-modal-target="site-banner-modal" href="#"
-                ><svg
+              <button
+                id="videoDoorButton"
+                class=""
+                data-modal-target="site-banner-modal"
+              >
+                <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="201"
                   height="201"
@@ -688,7 +718,7 @@
                     </g>
                   </g>
                 </svg>
-              </a>
+              </button>
             </div>
             <div class="w-[2px] h-full bg-white"></div>
           </div>
@@ -1109,11 +1139,16 @@
       const closeVideo = document.getElementById("closeVideo");
       const openVideo = document.getElementById("openVideo");
       const videoModel = document.getElementById("videoModel");
-
-      let translateXAmount = 0;
-      const movePercentage = 106;
+      const videoDoorButton = document.getElementById("videoDoorButton");
+      const videoDoorLeft = document.getElementById("videoDoorLeft");
+      const videoDoorRight = document.getElementById("videoDoorRight");
+      const videoStamp = document.getElementById("videoStamp");
 
       // Slider Animation
+      let translateXAmount = 0;
+      const movePercentage = 106;
+      const getLimit = () => (window.innerWidth >= 768 ? 318 : 424);
+
       const updateSlider = () => {
         slider.forEach((s) => {
           s.style.transform = `translateX(${translateXAmount}%)`;
@@ -1128,7 +1163,7 @@
       });
 
       prevButton.addEventListener("click", () => {
-        if (translateXAmount < 424) {
+        if (translateXAmount < getLimit()) {
           translateXAmount += movePercentage;
           updateSlider();
         }
@@ -1232,6 +1267,23 @@
       closeVideo.addEventListener("click", () => {
         videoModel.classList.add("hidden");
         videoModel.classList.remove("flex");
+      });
+
+      // Video Door
+
+      videoDoorButton.addEventListener("click", () => {
+        videoDoorLeft.classList.add("-translate-x-full");
+        videoDoorRight.classList.add("translate-x-full");
+        videoStamp.classList.add("translate-x-full");
+
+        const iframe = document.querySelector("iframe");
+        const videoSrc = iframe.getAttribute("src");
+
+        if (!videoSrc.includes("autoplay=1")) {
+          const newSrc =
+            videoSrc + (videoSrc.includes("?") ? "&" : "?") + "autoplay=1";
+          iframe.setAttribute("src", newSrc);
+        }
       });
     </script>
   </body>
